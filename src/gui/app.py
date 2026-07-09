@@ -124,28 +124,61 @@ def build_case() -> SimulationCase:
     )
 
 
-st.subheader("Aerodynamic coefficient table (Mach-indexed, default academic values)")
+st.subheader("Aerodynamic coefficient table - editable")
 st.caption(
-    "Default values are Table 1 from Khalil, Abdalla & Kamal (2009), \"Dispersion "
-    "Analysis for Spinning Artillery Projectile\" (155 mm M107, computed with "
-    "SPINNER-98) - see docs/model.md for the column mapping and sign conventions."
+    "**This table accepts direct edits.** Double-click any cell to change it, "
+    "or use the +/- row controls to add or remove Mach points - your changes "
+    "are used the next time you click **Run simulation**. Defaults are Table 1 "
+    "from Khalil, Abdalla & Kamal (2009), \"Dispersion Analysis for Spinning "
+    "Artillery Projectile\" (155 mm M107, computed with SPINNER-98); see "
+    "docs/model.md for the column mapping and sign conventions."
 )
-aero_default = default_155mm_aero_table()
-aero_df = pd.DataFrame({
-    "Mach": aero_default.mach,
-    "CA (Cd0)": aero_default.cd0,
-    "CA_alpha2 (Cd_alpha2)": aero_default.cd_alpha2,
-    "CN_alpha (Cl_alpha)": aero_default.cl_alpha,
-    "Cmq": aero_default.cmq,
-    "Cm_alpha": aero_default.cm_alpha,
-    "Clp (Cspin)": aero_default.cspin,
-    "CYpalpha (Cmag_force)": aero_default.cmag_f,
-    "Cnpalpha_0deg": aero_default.cnpalpha_table[:, 0],
-    "Cnpalpha_2deg": aero_default.cnpalpha_table[:, 1],
-    "Cnpalpha_5deg": aero_default.cnpalpha_table[:, 2],
-    "Cnpalpha_10deg": aero_default.cnpalpha_table[:, 3],
-})
-edited_aero_df = st.data_editor(aero_df, num_rows="dynamic")
+
+
+def _default_aero_df() -> pd.DataFrame:
+    t = default_155mm_aero_table()
+    return pd.DataFrame({
+        "Mach": t.mach,
+        "CA (Cd0)": t.cd0,
+        "CA_alpha2 (Cd_alpha2)": t.cd_alpha2,
+        "CN_alpha (Cl_alpha)": t.cl_alpha,
+        "Cmq": t.cmq,
+        "Cm_alpha": t.cm_alpha,
+        "Clp (Cspin)": t.cspin,
+        "CYpalpha (Cmag_force)": t.cmag_f,
+        "Cnpalpha_0deg": t.cnpalpha_table[:, 0],
+        "Cnpalpha_2deg": t.cnpalpha_table[:, 1],
+        "Cnpalpha_5deg": t.cnpalpha_table[:, 2],
+        "Cnpalpha_10deg": t.cnpalpha_table[:, 3],
+    })
+
+
+if "aero_df" not in st.session_state:
+    st.session_state.aero_df = _default_aero_df()
+
+upload_col, reset_col, download_col = st.columns([2, 1, 1])
+with upload_col:
+    uploaded_aero_csv = st.file_uploader(
+        "Load your own table (CSV, same column headers)", type="csv", key="aero_csv_upload",
+    )
+    if uploaded_aero_csv is not None:
+        st.session_state.aero_df = pd.read_csv(uploaded_aero_csv)
+with reset_col:
+    st.write("")  # vertical align with the uploader
+    if st.button("Reset to paper defaults"):
+        st.session_state.aero_df = _default_aero_df()
+with download_col:
+    st.write("")
+    st.download_button(
+        "Download current table",
+        st.session_state.aero_df.to_csv(index=False),
+        file_name="aero_table.csv",
+    )
+
+edited_aero_df = st.data_editor(
+    st.session_state.aero_df, num_rows="dynamic", key="aero_table_editor",
+)
+st.session_state.aero_df = edited_aero_df
 
 run_clicked = st.button("Run simulation", type="primary")
 

@@ -12,6 +12,8 @@ operational use.**
 
 ## Pages
 
+- [User Manual](User-Manual.md) - the full guide: theory, usage, code
+  reference, and how to modify the project. Start here.
 - [Installation](Installation.md)
 - [Model Overview](Model.md)
 - [Equations of Motion](Equations.md)

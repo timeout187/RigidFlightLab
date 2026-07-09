@@ -55,6 +55,11 @@ A static, no-install preview of the default trajectory is in
 
 ## Learn more
 
+- **[docs/USER_MANUAL.md](docs/USER_MANUAL.md) - the full guide**,
+  written for PhD/MSc/research students: theory, how to use the GUI,
+  a complete function-by-function code reference, and how to modify
+  the project and contribute changes back through GitHub. Start here
+  if you want the deep-dive.
 - [docs/model.md](docs/model.md) - reference frames, aerodynamics,
   numerical integration, and the validation table above in full.
 - [docs/equations.md](docs/equations.md) - the paper's actual
