@@ -14,6 +14,7 @@ operational use.**
 
 - [Installation](Installation.md)
 - [Model Overview](Model.md)
+- [Equations of Motion](Equations.md)
 - [Safety and Academic-Use Statement](Safety.md)
 - [FAQ](FAQ.md)
 

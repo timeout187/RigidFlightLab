@@ -1,142 +1,109 @@
 # RigidFlightLab
 
-**six-dof-spin-projectile-simulator**
+**A 6-DOF spin-stabilized artillery projectile simulator.**
 
-An academic simulation of a 155 mm spin-stabilized artillery
-projectile, producing full 6-DOF (six degrees of freedom) rigid-body
-trajectory calculations. Built for **published-benchmark reproduction**
-and **numerical-methods education only** — see
-[docs/safety.md](docs/safety.md).
+> **Academic simulation only.** Built for numerical-methods education
+> and reproducing a published research paper — **not** a fire-control
+> system, targeting tool, or operational artillery calculator. No
+> target-coordinate input, aim correction, or weapon-deployment
+> capability. Not validated for real-world use. See
+> [docs/safety.md](docs/safety.md).
 
-> **Not for operational use. Not validated for real-world fire-
-> control.** This project has no target-coordinate input, aim
-> correction, weapon-deployment advice, live-fire recommendation,
-> artillery table generation, or range/accuracy optimization.
+## What is this?
 
-## Purpose
+RigidFlightLab simulates the full 6-degree-of-freedom flight of a
+155&nbsp;mm spin-stabilized shell — position, velocity, spin, and
+tumble (pitch/yaw) — from muzzle to impact. It reproduces the model
+and results of a real published paper (see [Credits](#credits)), and
+comes with a browser-based GUI so you can change the inputs and watch
+the trajectory update.
 
-This tool reproduces the theoretical 6-DOF model, example parameters,
-**and aerodynamic coefficient table (Table 1)** described in the
-published paper *"Dispersion Analysis for Spinning Artillery
-Projectile"* (see [Citation](#citation)), for PhD-level study of
-rigid-body flight dynamics and numerical integration methods. With the
-default case, this simulator reproduces the paper's own published
-flight-time, summit altitude, deceleration, and pitch/velocity curves
-closely - see [Validation](docs/model.md#validation-against-the-published-results).
+With the default inputs, it matches the paper's own published numbers
+closely: **66.4 s flight time** (paper: 66.67 s), **5630 m summit
+altitude** (paper: ~5750 m), **-4.47 g initial deceleration** (paper:
+-4.45 g). See [docs/model.md](docs/model.md#validation-against-the-published-results)
+for the full comparison.
 
-## Demo
-
-A static, non-interactive demo of the nominal example case (charts
-only, no input forms) is in [docs/demo.html](docs/demo.html) —
-open it directly in a browser, or enable GitHub Pages
-(Settings -> Pages -> deploy from `/docs`) to host it at
-`https://timeout187.github.io/RigidFlightLab/demo.html`.
-
-## Screenshots
-
-_placeholder — run the GUI locally (`streamlit run src/gui/app.py`) to
-see the full input forms; the 3D trajectory and time-history plots
-match [docs/demo.html](docs/demo.html)._
-
-## Installation
+## Quick start
 
 ```bash
 git clone https://github.com/timeout187/RigidFlightLab.git
 cd RigidFlightLab
 pip install -r requirements.txt
-```
-
-Requires Python 3.10+.
-
-## Running the GUI
-
-```bash
 streamlit run src/gui/app.py
 ```
 
-The GUI loads the default academic example case (155 mm, 684.3 m/s
-muzzle velocity, 175.48 rev/s spin rate, 44 deg elevation) and lets you
-edit:
+That opens a browser tab with the full GUI: edit the projectile,
+launch conditions, aerodynamics table, wind, and solver settings, hit
+**Run simulation**, and get a 3D trajectory plus time-history plots you
+can export as CSV/JSON.
 
-- Projectile physical properties (caliber, length, mass, CG, moments
-  of inertia)
-- Initial conditions (muzzle velocity, spin rate, elevation/azimuth,
-  launch altitude)
-- Aerodynamic coefficient table (Mach-indexed, editable)
-- Atmosphere/wind model
-- Numerical solver settings (RK4 or scipy `solve_ivp` methods)
-- Dispersion/uncertainty parameters
+A static, no-install preview of the default trajectory is in
+[docs/demo.html](docs/demo.html) — open it in any browser.
 
-Click **Run simulation** to integrate the trajectory and view:
+## What you can do with it
 
-- 3D trajectory path
-- Altitude, velocity, axial/normal acceleration, pitch angle, spin
-  rate, and total angle of attack vs. flight time
-- Impact point summary
-- Optional Monte Carlo dispersion sensitivity plots
+- Run the paper's own 155 mm example case, or change any input
+  (caliber, mass, muzzle velocity, spin rate, elevation angle, wind...)
+- Edit the aerodynamic coefficient table directly in the GUI
+- Choose between a fixed-step RK4 integrator or adaptive
+  `scipy.integrate.solve_ivp` methods
+- Run a Monte Carlo dispersion sweep over 8 uncertainty parameters
+  (muzzle velocity, mass, inertia, wind, etc.) to see impact-point
+  spread
+- Export any run as CSV or JSON
 
-Results can be exported as CSV or JSON.
+## Learn more
 
-## Running the examples
+- [docs/model.md](docs/model.md) - reference frames, aerodynamics,
+  numerical integration, and the validation table above in full.
+- [docs/equations.md](docs/equations.md) - the paper's actual
+  equations of motion, transcribed, with the exact mapping to the code.
+- [docs/safety.md](docs/safety.md) - the full academic-use statement.
 
-```bash
-python -m examples.nominal_run          # nominal academic example case
-python -m examples.dispersion_example   # dispersion sensitivity sweep
-```
-
-## Running the tests
-
-```bash
-python -m pytest tests/ -q
-```
-
-## Model overview
-
-See [docs/model.md](docs/model.md) for the full theoretical model:
-reference frames, equations of motion, aerodynamic model, atmosphere
-model, and numerical integration methods.
-
-## Repository layout
+## Project layout
 
 ```
-src/simulator/   equations of motion, atmosphere, aero interpolation, integrators
-src/gui/         Streamlit GUI (input forms, plots, run button, export)
-src/data/        default academic example data
-docs/            theoretical model, equation references, safety statement, static demo page
-wiki/            wiki-page content, staged here until the GitHub Wiki is enabled
-tests/           unit tests for atmosphere, aero interpolation, integration, sanity
-examples/        nominal case and dispersion sensitivity example scripts
+src/simulator/   the physics: equations of motion, atmosphere, aero data, integrators
+src/gui/         the Streamlit app
+src/data/        default 155 mm example case
+docs/            model write-up, safety notes, static demo page
+wiki/            same docs, staged for the GitHub Wiki
+tests/           automated tests (25, all passing)
+examples/        two ready-to-run example scripts
 ```
 
 ## Limitations
 
-- The aerodynamic coefficient table is the paper's own published
-  Table 1 for a 155 mm M107 shell, not independently validated by this
-  project against any other source or real firing data.
-- Range/impact values are close to, but not exact reproductions of,
-  the paper's own charts - see [docs/model.md](docs/model.md#validation-against-the-published-results).
-- See [docs/model.md](docs/model.md#limitations) for the full list.
+- The aerodynamic data is the paper's own published table for one
+  specific shell — not independently re-validated against other
+  sources or live firing data.
+- Range/impact numbers are close to, but not an exact match for, the
+  paper's own charts (see the validation table linked above).
+- Full details in [docs/model.md](docs/model.md#limitations).
 
-## Citation
+## Credits
 
-If you use this software, please cite the source paper:
+**Based on the published paper:**
 
-> Khalil, M., Abdalla, H., and Kamal, O., "Dispersion Analysis for
-> Spinning Artillery Projectile", 13th International Conference on
+> Khalil, M., Abdalla, H., and Kamal, O., *"Dispersion Analysis for
+> Spinning Artillery Projectile"*, 13th International Conference on
 > Aerospace Sciences & Aviation Technology (ASAT-13), Paper
 > ASAT-13-FM-03, Military Technical College, Cairo, Egypt, May 2009.
 
-This project reproduces that paper's theoretical 6-DOF model, 155 mm
-M107 example case, and Table 1 aerodynamic coefficients.
+This project reimplements that paper's 6-DOF equations of motion,
+155&nbsp;mm M107 example case, and Table 1 aerodynamic coefficients as
+open-source, runnable code with an interactive GUI — full credit for
+the underlying research and data to Mostafa Khalil, H. Abdalla, and
+Osama Kamal.
 
-## Safety disclaimer
+**Built with:** [Streamlit](https://streamlit.io),
+[Plotly](https://plotly.com), [SciPy](https://scipy.org), and
+[NumPy](https://numpy.org).
 
-This is an **academic simulation** for **published-benchmark
-reproduction** and **numerical methods education only**. It is **not a
-fire-control system**, **not a targeting tool**, and **not an
-operational artillery calculator**. See [docs/safety.md](docs/safety.md)
-for the full statement.
+**Project by [Hasan Ahmed](https://github.com/timeout187)**, built
+with Claude.
 
 ## License
 
-[MIT](LICENSE).
+[MIT](LICENSE) — see the license file for the full text and copyright.
