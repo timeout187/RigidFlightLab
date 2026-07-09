@@ -60,7 +60,7 @@ with st.sidebar:
 
     st.header("Numerical solver settings")
     method = st.selectbox("Integration method", ["RK45", "RK4", "DOP853", "Radau"], index=0)
-    t_max = st.number_input("Max flight time (s)", value=300.0, step=5.0)
+    t_max = st.number_input("Max flight time (s)", value=90.0, step=5.0)
     max_step = st.number_input("Max/fixed step size (s)", value=0.02, step=0.001, format="%.4f")
     rtol = st.number_input("Relative tolerance", value=1e-6, format="%.1e")
 
@@ -108,17 +108,25 @@ def build_case() -> SimulationCase:
 
 
 st.subheader("Aerodynamic coefficient table (Mach-indexed, default academic values)")
+st.caption(
+    "Default values are Table 1 from Khalil, Abdalla & Kamal (2009), \"Dispersion "
+    "Analysis for Spinning Artillery Projectile\" (155 mm M107, computed with "
+    "SPINNER-98) - see docs/model.md for the column mapping and sign conventions."
+)
 aero_default = default_155mm_aero_table()
 aero_df = pd.DataFrame({
     "Mach": aero_default.mach,
-    "Cd0": aero_default.cd0,
-    "Cd_alpha2": aero_default.cd_alpha2,
-    "Cl_alpha": aero_default.cl_alpha,
+    "CA (Cd0)": aero_default.cd0,
+    "CA_alpha2 (Cd_alpha2)": aero_default.cd_alpha2,
+    "CN_alpha (Cl_alpha)": aero_default.cl_alpha,
     "Cmq": aero_default.cmq,
     "Cm_alpha": aero_default.cm_alpha,
-    "Cspin": aero_default.cspin,
-    "Cmag_force": aero_default.cmag_f,
-    "Cmag_moment": aero_default.cmag_m,
+    "Clp (Cspin)": aero_default.cspin,
+    "CYpalpha (Cmag_force)": aero_default.cmag_f,
+    "Cnpalpha_0deg": aero_default.cnpalpha_table[:, 0],
+    "Cnpalpha_2deg": aero_default.cnpalpha_table[:, 1],
+    "Cnpalpha_5deg": aero_default.cnpalpha_table[:, 2],
+    "Cnpalpha_10deg": aero_default.cnpalpha_table[:, 3],
 })
 edited_aero_df = st.data_editor(aero_df, num_rows="dynamic")
 
@@ -127,14 +135,16 @@ run_clicked = st.button("Run simulation", type="primary")
 if run_clicked:
     case = build_case()
     case.aero_table.mach = edited_aero_df["Mach"].to_numpy()
-    case.aero_table.cd0 = edited_aero_df["Cd0"].to_numpy()
-    case.aero_table.cd_alpha2 = edited_aero_df["Cd_alpha2"].to_numpy()
-    case.aero_table.cl_alpha = edited_aero_df["Cl_alpha"].to_numpy()
+    case.aero_table.cd0 = edited_aero_df["CA (Cd0)"].to_numpy()
+    case.aero_table.cd_alpha2 = edited_aero_df["CA_alpha2 (Cd_alpha2)"].to_numpy()
+    case.aero_table.cl_alpha = edited_aero_df["CN_alpha (Cl_alpha)"].to_numpy()
     case.aero_table.cmq = edited_aero_df["Cmq"].to_numpy()
     case.aero_table.cm_alpha = edited_aero_df["Cm_alpha"].to_numpy()
-    case.aero_table.cspin = edited_aero_df["Cspin"].to_numpy()
-    case.aero_table.cmag_f = edited_aero_df["Cmag_force"].to_numpy()
-    case.aero_table.cmag_m = edited_aero_df["Cmag_moment"].to_numpy()
+    case.aero_table.cspin = edited_aero_df["Clp (Cspin)"].to_numpy()
+    case.aero_table.cmag_f = edited_aero_df["CYpalpha (Cmag_force)"].to_numpy()
+    case.aero_table.cnpalpha_table = edited_aero_df[
+        ["Cnpalpha_0deg", "Cnpalpha_2deg", "Cnpalpha_5deg", "Cnpalpha_10deg"]
+    ].to_numpy()
 
     model = DynamicsModel(case)
     with st.spinner("Integrating 6-DOF equations of motion..."):

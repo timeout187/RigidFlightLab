@@ -8,7 +8,7 @@ from src.simulator.integrators import run_rk4, run_solve_ivp, run_trajectory
 def test_rk4_and_solve_ivp_agree_over_a_short_early_flight_segment():
     """RK4 (fixed-step) and solve_ivp (adaptive RK45) should agree
     closely before the projectile has traveled far, without paying the
-    cost of integrating the full multi-hundred-second flight."""
+    cost of integrating the full ~66 s flight."""
     case = default_case()
     model = DynamicsModel(case)
 

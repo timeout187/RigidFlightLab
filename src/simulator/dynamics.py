@@ -96,12 +96,12 @@ class DynamicsModel:
         vel_mag = float(np.linalg.norm(v_air_frame))
         vel_mag_safe = max(vel_mag, 1e-3)
         mach = vel_mag / atmo.speed_of_sound_mps
-        coeffs = aero.coefficients(mach)
 
         e_v = v_air_frame / vel_mag_safe
         e_x = np.array([1.0, 0.0, 0.0])
         cos_alpha = float(np.clip(np.dot(e_x, e_v), -1.0, 1.0))
         alpha_total = math.acos(cos_alpha)
+        coeffs = aero.coefficients(mach, math.degrees(alpha_total))
 
         cross_xv = np.cross(e_x, e_v)
         cross_norm = float(np.linalg.norm(cross_xv))
@@ -130,8 +130,17 @@ class DynamicsModel:
         aero_force_frame = drag_force + lift_force + magnus_force
         total_force_frame = aero_force_frame + proj.mass_kg * gravity_frame
 
-        overturning_moment = q_dyn * area * d * coeffs["cm_alpha"] * math.sin(alpha_total) * m_dir
-        magnus_moment = q_dyn * area * d * coeffs["cmag_m"] * spin_factor * math.sin(alpha_total) * m_dir
+        # Note the leading minus sign: m_dir = e_x cross e_v points in the
+        # direction that ROTATES e_x toward e_v (i.e. reduces alpha) for a
+        # positive angular rate about it. A positive Cm_alpha is the
+        # paper's aerodynamically *destabilizing* (overturning) moment, so
+        # it must act opposite m_dir - growing alpha absent the gyroscopic
+        # precession that a spin-stabilized shell relies on for stability.
+        overturning_moment = -q_dyn * area * d * coeffs["cm_alpha"] * math.sin(alpha_total) * m_dir
+        # Cnpalpha is tabulated directly against total angle of attack (see
+        # aero.py), so the alpha-dependence is already baked into the
+        # looked-up coefficient - no additional sin(alpha) factor here.
+        magnus_moment = -q_dyn * area * d * coeffs["cnpalpha"] * spin_factor * m_dir
         spin_damping_moment = np.array([
             q_dyn * area * d * (d * p / (2.0 * vel_mag_safe)) * coeffs["cspin"], 0.0, 0.0,
         ])
@@ -143,12 +152,13 @@ class DynamicsModel:
         )
 
         m = proj.mass_kg
-        # Coriolis terms use the non-rolling frame's own angular velocity
-        # (0, q, r) - the spin rate p does not enter the translational
-        # equations directly in this frame.
-        u_dot = q * w - r * v + total_force_frame[0] / m
-        v_dot = r * u + total_force_frame[1] / m
-        w_dot = -q * u + total_force_frame[2] / m
+        # Transport theorem: dV/dt|frame = F/m - Omega x V, with the
+        # non-rolling frame's own angular velocity Omega = (0, q, r) - the
+        # spin rate p does not enter the translational equations directly
+        # in this frame.
+        u_dot = -q * w + r * v + total_force_frame[0] / m
+        v_dot = -r * u + total_force_frame[1] / m
+        w_dot = q * u + total_force_frame[2] / m
 
         ixx, iyy = proj.ixx_kg_m2, proj.iyy_kg_m2
         # Symmetric-top (Iyy == Izz) gyroscopic equations in the

@@ -41,7 +41,7 @@ class SolverSettings:
     max_step_s: float = 0.02
     rtol: float = 1e-6
     atol: float = 1e-6
-    t_max_s: float = 300.0
+    t_max_s: float = 90.0
     ground_altitude_m: float = 0.0
 
 

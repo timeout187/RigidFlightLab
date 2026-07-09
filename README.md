@@ -16,10 +16,13 @@ and **numerical-methods education only** — see
 ## Purpose
 
 This tool reproduces the theoretical 6-DOF model, example parameters,
-and educational output plots described in the published paper
-*"Dispersion Analysis for Spinning Artillery Projectile"* (see
-[Citation](#citation)), for PhD-level study of rigid-body flight
-dynamics and numerical integration methods.
+**and aerodynamic coefficient table (Table 1)** described in the
+published paper *"Dispersion Analysis for Spinning Artillery
+Projectile"* (see [Citation](#citation)), for PhD-level study of
+rigid-body flight dynamics and numerical integration methods. With the
+default case, this simulator reproduces the paper's own published
+flight-time, summit altitude, deceleration, and pitch/velocity curves
+closely - see [Validation](docs/model.md#validation-against-the-published-results).
 
 ## Demo
 
@@ -107,21 +110,24 @@ examples/        nominal case and dispersion sensitivity example scripts
 
 ## Limitations
 
-- The bundled aerodynamic coefficient table is a representative
-  academic approximation, not a validated match to any specific
-  fielded 155 mm round.
-- Absolute range/impact values are illustrative of the underlying
-  numerical methods and qualitative physics, not an exact reproduction
-  of any specific published firing table.
+- The aerodynamic coefficient table is the paper's own published
+  Table 1 for a 155 mm M107 shell, not independently validated by this
+  project against any other source or real firing data.
+- Range/impact values are close to, but not exact reproductions of,
+  the paper's own charts - see [docs/model.md](docs/model.md#validation-against-the-published-results).
 - See [docs/model.md](docs/model.md#limitations) for the full list.
 
 ## Citation
 
 If you use this software, please cite the source paper:
 
-> "Dispersion Analysis for Spinning Artillery Projectile" (uploaded
-> reference paper providing the theoretical 6-DOF model, example
-> parameters, and aerodynamic coefficient data reproduced here).
+> Khalil, M., Abdalla, H., and Kamal, O., "Dispersion Analysis for
+> Spinning Artillery Projectile", 13th International Conference on
+> Aerospace Sciences & Aviation Technology (ASAT-13), Paper
+> ASAT-13-FM-03, Military Technical College, Cairo, Egypt, May 2009.
+
+This project reproduces that paper's theoretical 6-DOF model, 155 mm
+M107 example case, and Table 1 aerodynamic coefficients.
 
 ## Safety disclaimer
 
