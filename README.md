@@ -341,12 +341,13 @@ missing features to add later):
    **The paper this project reproduces.**
 2. Etkin, B., *Dynamics of Atmospheric Flight*, John Wiley & Sons,
    1972. (Cited by [1] as the source of its 6-DOF formulation.)
-3. *U.S. Standard Atmosphere, 1976*. NOAA/NASA/USAF, Document
-   NOAA-S/T 76-1562.
-4. McCoy, R. L., *Modern Exterior Ballistics: The Launch and Flight
-   Dynamics of Symmetric Projectiles*, 2nd ed., Schiffer, 2012.
-   (Background reading for the non-rolling/aeroballistic frame used
-   here; not cited by [1].)
+3. *U.S. Standard Atmosphere, 1976*, jointly published by
+   NOAA/NASA/USAF - the standard model implemented in
+   `src/simulator/atmosphere.py`. Not cited by [1], which uses its own
+   unspecified atmospheric model.
+4. McCoy, R. L., *Modern Exterior Ballistics* - the standard textbook
+   treatment of the non-rolling/aeroballistic reference frame used in
+   `src/simulator/dynamics.py`. Not cited by [1].
 
 ## Credits
 
