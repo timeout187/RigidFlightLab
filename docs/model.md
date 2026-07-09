@@ -105,12 +105,25 @@ alias that mode and can produce spurious, unstable-looking results.
 
 ## Dispersion sensitivity analysis
 
-A Monte Carlo sweep perturbs muzzle velocity, launch angles, mass,
-drag coefficient, and wind within user-specified uncertainty ranges
-(Table 2 of the paper), and reports the spread of impact points (mean,
-standard deviation, CEP-50). This reproduces the *sensitivity-analysis
-methodology* described in the paper; it does **not** compute or
-suggest any aim/fire-control correction.
+A Monte Carlo sweep draws the eight uncertainty parameters of the
+paper's Table 2 - firing pitch angle, projectile mass, axial and
+lateral moments of inertia, muzzle velocity, muzzle spin rate, and
+wind speed/direction at zero altitude - as independent Gaussians, and
+reports the spread of impact points (mean, standard deviation,
+CEP-50).
+
+The paper's own Section 4.4 instead sweeps each parameter
+*individually* (holding the rest at nominal) and plots the resulting
+range/drift/radial error directly (Figures 11-18), treating each
+listed range as a deterministic bound to step across rather than a
+Gaussian width. This project uses a *joint* Monte Carlo sweep instead
+(the same general method as one of the paper's own cited references,
+Saghafi & Khalilidelshad 2003), with the paper's stated range treated
+as an approximate one-standard-deviation width. This captures the same
+eight uncertainty sources at the paper's stated magnitudes, but does
+**not** reproduce Figures 11-18's specific individual-parameter curves
+one-for-one. It does **not** compute or suggest any aim/fire-control
+correction.
 
 ## Validation against the published results
 

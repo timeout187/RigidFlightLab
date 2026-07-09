@@ -65,10 +65,21 @@ with st.sidebar:
     rtol = st.number_input("Relative tolerance", value=1e-6, format="%.1e")
 
     st.header("Dispersion / uncertainty parameters")
+    st.caption(
+        "Defaults are Table 2 of Khalil, Abdalla & Kamal (2009) - the paper's own "
+        "eight uncertainty parameters, drawn here as independent Gaussians for a "
+        "joint Monte Carlo sweep (see docs/model.md)."
+    )
     run_dispersion = st.checkbox("Run dispersion sensitivity sweep", value=False)
     n_samples = st.number_input("Monte Carlo samples", value=200, step=10, min_value=10)
-    v0_std = st.number_input("Muzzle velocity std dev (m/s)", value=2.0, step=0.1)
-    elev_std = st.number_input("Elevation angle std dev (deg)", value=0.05, step=0.01, format="%.3f")
+    v0_std_pct = st.number_input("Muzzle velocity std dev (%)", value=2.0, step=0.1)
+    elev_std = st.number_input("Firing pitch angle std dev (deg)", value=0.4, step=0.05)
+    mass_std_pct = st.number_input("Projectile mass std dev (%)", value=1.0, step=0.1)
+    axial_inertia_std_pct = st.number_input("Axial moment of inertia std dev (%)", value=2.0, step=0.1)
+    lateral_inertia_std_pct = st.number_input("Lateral moment of inertia std dev (%)", value=2.0, step=0.1)
+    spin_std_pct = st.number_input("Muzzle spin rate std dev (%)", value=2.0, step=0.1)
+    wind_speed_std = st.number_input("Wind speed std dev (m/s)", value=2.0, step=0.1)
+    wind_dir_std = st.number_input("Wind direction std dev (deg)", value=2.0, step=0.1)
 
 
 def build_case() -> SimulationCase:
@@ -99,8 +110,14 @@ def build_case() -> SimulationCase:
         ),
         dispersion=DispersionSettings(
             n_samples=int(n_samples),
-            muzzle_velocity_std_mps=v0_std,
+            muzzle_velocity_std_pct=v0_std_pct,
             elevation_angle_std_deg=elev_std,
+            mass_std_pct=mass_std_pct,
+            axial_inertia_std_pct=axial_inertia_std_pct,
+            lateral_inertia_std_pct=lateral_inertia_std_pct,
+            spin_rate_std_pct=spin_std_pct,
+            wind_speed_std_mps=wind_speed_std,
+            wind_direction_std_deg=wind_dir_std,
         ),
         wind=WindModel(wind_north_mps=wind_n, wind_east_mps=wind_e, shear_per_km=wind_shear),
         aero_table=default_155mm_aero_table(),
