@@ -60,9 +60,9 @@ with st.sidebar:
 
     st.header("Numerical solver settings")
     method = st.selectbox("Integration method", ["RK45", "RK4", "DOP853", "Radau"], index=0)
-    t_max = st.number_input("Max flight time (s)", value=120.0, step=5.0)
-    max_step = st.number_input("Max/fixed step size (s)", value=0.01, step=0.001, format="%.4f")
-    rtol = st.number_input("Relative tolerance", value=1e-8, format="%.1e")
+    t_max = st.number_input("Max flight time (s)", value=300.0, step=5.0)
+    max_step = st.number_input("Max/fixed step size (s)", value=0.02, step=0.001, format="%.4f")
+    rtol = st.number_input("Relative tolerance", value=1e-6, format="%.1e")
 
     st.header("Dispersion / uncertainty parameters")
     run_dispersion = st.checkbox("Run dispersion sensitivity sweep", value=False)

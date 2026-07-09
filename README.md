@@ -21,10 +21,19 @@ and educational output plots described in the published paper
 [Citation](#citation)), for PhD-level study of rigid-body flight
 dynamics and numerical integration methods.
 
+## Demo
+
+A static, non-interactive demo of the nominal example case (charts
+only, no input forms) is in [docs/demo.html](docs/demo.html) —
+open it directly in a browser, or enable GitHub Pages
+(Settings -> Pages -> deploy from `/docs`) to host it at
+`https://timeout187.github.io/RigidFlightLab/demo.html`.
+
 ## Screenshots
 
-_placeholder — run the GUI locally to see the input forms, 3D
-trajectory plot, and time-history plots described below._
+_placeholder — run the GUI locally (`streamlit run src/gui/app.py`) to
+see the full input forms; the 3D trajectory and time-history plots
+match [docs/demo.html](docs/demo.html)._
 
 ## Installation
 
@@ -90,7 +99,8 @@ model, and numerical integration methods.
 src/simulator/   equations of motion, atmosphere, aero interpolation, integrators
 src/gui/         Streamlit GUI (input forms, plots, run button, export)
 src/data/        default academic example data
-docs/            theoretical model, equation references, safety statement
+docs/            theoretical model, equation references, safety statement, static demo page
+wiki/            wiki-page content, staged here until the GitHub Wiki is enabled
 tests/           unit tests for atmosphere, aero interpolation, integration, sanity
 examples/        nominal case and dispersion sensitivity example scripts
 ```
@@ -120,3 +130,7 @@ reproduction** and **numerical methods education only**. It is **not a
 fire-control system**, **not a targeting tool**, and **not an
 operational artillery calculator**. See [docs/safety.md](docs/safety.md)
 for the full statement.
+
+## License
+
+[MIT](LICENSE).
