@@ -357,9 +357,6 @@ missing features to add later):
    NOAA/NASA/USAF - the standard model implemented in
    `src/simulator/atmosphere.py`. Not cited by [1], which uses its own
    unspecified atmospheric model.
-4. McCoy, R. L., *Modern Exterior Ballistics* - the standard textbook
-   treatment of the non-rolling/aeroballistic reference frame used in
-   `src/simulator/dynamics.py`. Not cited by [1].
 
 ## Credits
 
