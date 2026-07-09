@@ -173,10 +173,14 @@ r_dot = (Mz + Ixx*p*q) / Iyy
 The `Ixx*p*r` / `Ixx*p*q` terms are the **gyroscopic coupling** — they
 are what turn an aerodynamically *destabilizing* moment (see §2.4)
 into bounded precession instead of a runaway tumble, provided the spin
-rate is high enough (the **gyroscopic stability factor**, `Sg > 1`).
-This coupling is the mathematical heart of why spin-stabilization
-works at all, and getting its sign right was the single most important
-correctness issue in building this simulator (see §2.8).
+rate is high enough (the standard aeroballistics **gyroscopic
+stability factor**, `Sg > 1` — this term and criterion are not from
+the source paper; they're the general textbook explanation, e.g.
+McCoy, of *why* the mechanism the paper's own equations (2) encode
+actually works). This coupling is the mathematical heart of why
+spin-stabilization works at all, and getting its sign right was the
+single most important correctness issue in building this simulator
+(see §2.8).
 
 **Kinematics** (how the frame's own orientation, `theta` = pitch,
 `psi` = yaw, evolves from `q, r`; the frame doesn't roll so there's no
@@ -194,7 +198,11 @@ All of this lives in `src/simulator/dynamics.py` — see §4.4.
 At each integration step, the simulator computes the **total angle of
 attack** `alpha` — the angle between the relative wind and the
 symmetry axis — and looks up Mach-indexed coefficients from
-**Table 1** of the source paper (see §4.3) to compute:
+**Table 1** of the source paper (see §4.3). Table 1 is the paper's own
+published data; the formulas below connecting that data to actual
+forces and moments are standard aeroballistics practice, not
+algebra printed in the paper itself (its own equations (1)-(2) leave
+these terms as generic symbols):
 
 | Force/moment | Formula | Physical meaning |
 |---|---|---|

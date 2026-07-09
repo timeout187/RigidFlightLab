@@ -103,7 +103,18 @@ inertial frame with a nose-up-positive pitch convention, which flips
 some signs relative to the paper's own (implicitly NED-style, z-down)
 convention above. See the docstring there for the exact derivation.
 
-## Aerodynamic forces and moments (Table 1 coefficients, Section 4.2)
+## Aerodynamic forces and moments
+
+**Important provenance note**: the paper's own equations (1)-(2)
+leave the aerodynamic terms `A_axial`, `A_side`, `A_normal`, `L`, `M`,
+`N` as generic symbols - it does not spell out how they're computed
+from the Table 1 coefficients (`CA`, `CN_alpha`, `Cm_alpha`, etc.).
+Table 1 (Section 4.2) gives the *coefficient data*; the algebraic
+formulas below, connecting that data to actual forces and moments, are
+**standard aeroballistics practice (e.g. McCoy's textbook treatment),
+not text or formulas printed in the paper itself**. Only the
+coefficient *values* in Table 1 and the projectile/launch parameters
+in Section 4.1 are taken directly from the paper.
 
 Given the total angle of attack `alpha` (angle between the relative
 wind and the symmetry axis) and dynamic pressure `q_dyn = 0.5 * rho *

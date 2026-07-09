@@ -130,6 +130,10 @@ before modifying this code — see the worked debugging story in
 
 ### Aerodynamic forces and moments
 
+The paper's own equations (1)-(2) leave the aerodynamic terms as
+generic symbols and don't spell out how they're computed from the
+Table 1 coefficients - that data-to-force/moment relationship below is
+standard aeroballistics practice (not text printed in the paper).
 Given dynamic pressure `q_dyn = 0.5 * rho * V^2`, reference area `A`,
 caliber `d`, and total angle of attack `alpha`:
 
@@ -273,16 +277,24 @@ dispersion, and validation against the paper's published numbers
 
 With the default 155&nbsp;mm case and the paper's own Table 1 aero
 data, this simulator reproduces the paper's Section 4.3 published
-results closely:
+results closely. Values the paper states as exact text:
 
-| Quantity | Paper | This simulator |
+| Quantity | Paper (exact quote) | This simulator |
 |---|---|---|
-| Time of flight | 66.67 s | ~66.4 s |
-| Summit altitude / time | ~5750 m / ~31 s | ~5630 m / ~30.5 s |
-| Initial axial deceleration | -4.45 g | ~-4.47 g |
-| Pitch angle, launch to impact | 44&deg; to ~-55&deg; | 44&deg; to ~-58&deg; |
-| Max total angle of attack | ~1.3&deg; | ~1.7&deg; |
-| Muzzle / min / impact velocity | 684 / ~250-300 / ~330 m/s | 684 / ~253 / ~329 m/s |
+| Time of flight | "66.67 sec" | ~66.4 s |
+| Summit time | "nearly 31 s" | ~30.5 s |
+| Initial axial deceleration | "4.45g" | ~-4.47 g |
+
+Values read visually off the paper's own figures (not printed as
+exact numbers, so treat these as approximate chart readings):
+
+| Quantity | Paper (~, from chart) | This simulator |
+|---|---|---|
+| Summit altitude (Fig. 4) | ~5750 m | ~5630 m |
+| Pitch angle at impact (Fig. 8) | ~-55&deg; | ~-58&deg; |
+| Max total angle of attack (Fig. 10) | ~1.3&deg; | ~1.7&deg; |
+| Min / impact velocity (Fig. 5) | ~250-300 / ~330 m/s | ~253 / ~329 m/s |
+| Range (Fig. 3) | ~16-17 km | within ~10-15% |
 
 Full table and discussion:
 [docs/model.md#validation-against-the-published-results](docs/model.md#validation-against-the-published-results).

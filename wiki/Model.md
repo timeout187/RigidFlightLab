@@ -128,24 +128,37 @@ correction.
 ## Validation against the published results
 
 With the default case and Table 1 aero data, this simulator reproduces
-the paper's Section 4.3 / Figures 3-10 closely:
+the paper's Section 4.3 / Figures 3-10 closely. **Provenance of each
+number matters here**, so it's split into two groups:
 
-| Quantity | Paper | This simulator |
+**Stated directly as text in the paper** (Section 4.3):
+
+| Quantity | Paper (exact quote) | This simulator |
 |---|---|---|
-| Time of flight | 66.67 s | ~66.4 s |
-| Summit altitude / time | ~5750 m / ~31 s | ~5630 m / ~30.5 s |
-| Initial axial deceleration | -4.45 g | ~-4.47 g |
-| Pitch angle, launch -> impact | 44 deg -> ~-55 deg | 44 deg -> ~-58 deg |
-| Max total angle of attack | ~1.3 deg | ~1.7 deg |
-| Muzzle -> min -> impact velocity | 684 -> ~250-300 -> ~330 m/s | 684 -> ~253 -> ~329 m/s |
+| Time of flight | "66.67 sec" | ~66.4 s |
+| Summit time | "nearly 31 s" | ~30.5 s |
+| Initial axial deceleration | "4.45g" | ~-4.47 g |
+| Muzzle velocity | "684.3 m/s" (also Section 4.1) | 684.3 m/s (input, not an output) |
+| Firing elevation angle | "44" degrees (Section 4.1) | 44 deg (input, not an output) |
 
-Range (paper's 3D trajectory plot: ~16-17 km) is reproduced to within
-about 10-15%; exact agreement isn't expected since the paper's own
-figures are read off charts rather than published as tables, and this
-project's aerodynamic model (small differences in how `CA_alpha2`,
-`Cnpalpha`, and the normal-force direction are combined - see above)
-is a defensible but not certified-identical reconstruction of the
-paper's own body-fixed-axes equations (1)-(2).
+**Read visually off the paper's own figures** (3-10) - the paper does
+not give these as exact printed numbers, so treat the "paper" column
+as an approximate chart reading, not a quoted value:
+
+| Quantity | Paper (~, from chart) | This simulator |
+|---|---|---|
+| Summit altitude (Fig. 4) | ~5750 m | ~5630 m |
+| Pitch angle at impact (Fig. 8) | ~-55 deg | ~-58 deg |
+| Max total angle of attack (Fig. 10) | ~1.3 deg | ~1.7 deg |
+| Minimum velocity near summit (Fig. 5) | ~250-300 m/s | ~253 m/s |
+| Impact velocity (Fig. 5) | ~330 m/s | ~329 m/s |
+| Range (Fig. 3, 3D trajectory) | ~16-17 km | reproduced to within ~10-15% |
+
+This project's aerodynamic model (small differences in how
+`CA_alpha2`, `Cnpalpha`, and the normal-force direction are combined -
+see above) is a defensible but not certified-identical reconstruction
+of the paper's own body-fixed-axes equations (1)-(2), which is
+consistent with the close-but-not-exact agreement in both tables.
 
 ## Limitations
 
