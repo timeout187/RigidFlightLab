@@ -307,6 +307,10 @@ own intuition about "does this look right."
 
 ### 3.1 Installation
 
+The GUI is already running, with nothing to install, at
+**[rigidflightlab.streamlit.app](https://rigidflightlab.streamlit.app/)**.
+To run it locally instead (e.g. to use your own modified code):
+
 ```bash
 git clone https://github.com/timeout187/RigidFlightLab.git
 cd RigidFlightLab

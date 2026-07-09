@@ -4,10 +4,13 @@
 [![Docker](https://github.com/timeout187/RigidFlightLab/actions/workflows/publish-docker.yml/badge.svg)](https://github.com/timeout187/RigidFlightLab/actions/workflows/publish-docker.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Live app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://rigidflightlab.streamlit.app/)
 
 **A 6-DOF spin-stabilized artillery projectile simulator**, reproducing
 a published research paper's model, data, and results — built for
 numerical-methods education, not operational use.
+
+**Live app (no install needed): [rigidflightlab.streamlit.app](https://rigidflightlab.streamlit.app/)**
 
 > **Academic simulation only.** No target-coordinate input, aim
 > correction, weapon-deployment advice, or fire-control capability of
@@ -203,7 +206,12 @@ python -m pytest tests/ -q   # optional: verify the install, ~45s
 
 ## Usage
 
-### GUI (recommended)
+### Live app (no install needed)
+
+**[rigidflightlab.streamlit.app](https://rigidflightlab.streamlit.app/)**
+— the full GUI below, already running, in your browser.
+
+### GUI (local)
 
 ```bash
 streamlit run src/gui/app.py
