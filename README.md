@@ -10,7 +10,10 @@
 a published research paper's model, data, and results — built for
 numerical-methods education, not operational use.
 
-**Live app (no install needed): [rigidflightlab.streamlit.app](https://rigidflightlab.streamlit.app/)**
+**Live app (full interactive GUI, no install needed):
+[rigidflightlab.streamlit.app](https://rigidflightlab.streamlit.app/)**
+· **Static demo (3D trajectory + plots, no server):
+[timeout187.github.io/RigidFlightLab](https://timeout187.github.io/RigidFlightLab/)**
 
 > **Academic simulation only.** No target-coordinate input, aim
 > correction, weapon-deployment advice, or fire-control capability of
@@ -225,8 +228,9 @@ simulation**, and get a 3D trajectory plus six time-history plots,
 exportable as CSV/JSON. Enable the dispersion checkbox for a Monte
 Carlo sensitivity sweep.
 
-A static, no-install preview of the default trajectory is in
-[docs/demo.html](docs/demo.html).
+A static, no-install preview of the default trajectory is live at
+**[timeout187.github.io/RigidFlightLab](https://timeout187.github.io/RigidFlightLab/)**
+(source: [docs/demo.html](docs/demo.html)).
 
 ### Editing the aerodynamic table
 
